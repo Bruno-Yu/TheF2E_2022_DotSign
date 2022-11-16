@@ -17,7 +17,6 @@ git add -A
 git commit -m 'deploy'
 
 
-//記得修改下方程式碼，說明在下方toggle list中
 # 部署到 https://<USERNAME>.github.io/<REPO>
-git push -f https://github.com/Bruno-Yu/TheF2E_2022_DotSign.git main:gh-pages
+git push -f https://github.com/Bruno-Yu/TheF2E_2022_DotSign.git master:gh-pages
 cd -

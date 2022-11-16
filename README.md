@@ -1,24 +1,30 @@
-# f2e_week2
+# THE F2E 2022 week 2
 
-## Project setup
-```
-npm install
-```
+> Code: Bruno / Design: [Jenny Wu](https://uxfol.io/jennywu)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Introduction
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Week2 - 今晚，我想來點點簽
 
-### Lints and fixes files
-```
-npm run lint
-```
+網址: https://bruno-yu.github.io/TheF2E_2022_DotSign/#/
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## How to run in local
+
+1. Clone this repository
+2. `npm install`
+3. `npm run serve`
+
+## Use tools
+
+- [Vue 3](https://vuejs.org/)
+- [Vue CLI](https://cli.vuejs.org/)
+- [Pinia](https://pinia.vuejs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Tailwind Elements](https://tailwind-elements.com/)
+
+## Plugins
+
+- [pdf.js](https://mozilla.github.io/pdf.js/)
+- [fabric.js](http://fabricjs.com/docs/index.html)
+- [jspdf.js](https://rawgit.com/MrRio/jsPDF/master/docs/index.html)
+- [colr_pickr.js](https://r-tek.github.io/colr_pickr/)
