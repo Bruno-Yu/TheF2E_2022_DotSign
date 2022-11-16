@@ -1,4 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import mitt from 'mitt';
+import { createPinia } from 'pinia';
+import App from './App.vue';
+import 'tw-elements';
+import router from './router';
 
-createApp(App).mount('#app')
+const pinia = createPinia();
+const emitter = mitt();
+const app = createApp(App);
+app.config.globalProperties.$emitter = emitter;
+app.use(router);
+app.use(pinia);
+app.mount('#app');

@@ -1,26 +1,26 @@
+<!-- eslint-disable max-len -->
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="w-full">
+    <RouterView />
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    color: #191a1b;
+    min-height: 100vh;
+    font-size: 16px;
+  }
+  /* * {
+    outline: 1px solid black;
+  } */
+  .nav-tabs.nav-link {
+    @apply text-n6;
+  }
 }
 </style>
