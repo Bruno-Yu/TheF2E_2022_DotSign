@@ -16,7 +16,7 @@
 
     <div class="bg-n1 mt-8 w-full max-w-5xl mx-auto xl:rounded xl:mt-[80px] relative">
       <p class="text-2xl font-bold absolute left-0 right-0 top-[-38px]">
-        點點簽 - 訪客試用版<span class="text-sm ml-3 align-middle"
+        點點簽 - 訪客試用版<span class="hidden sm:inline text-sm ml-3 align-middle"
           >( 正式版請到 <router-link class="text-p1" to="./login">連結</router-link> )</span
         >
       </p>

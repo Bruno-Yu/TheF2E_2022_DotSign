@@ -73,23 +73,31 @@
                 或使用電子信箱登入
               </p>
             </div>
-            <form>
+            <VForm v-slot="{ errors }">
               <div class="form-group mb-6 relative">
-                <input
+                <VField
                   type="email"
+                  name="登入帳號"
+                  :class="{ 'is-invalid': errors['登入帳號'] }"
                   class="form-control block w-full pl-9 pr-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="loginEmail"
+                  rules="email|required"
                   placeholder="請輸入您的電子信箱"
                 />
+                <ErrorMessage name="登入帳號" class="invalid-feedback" />
                 <img class="absolute top-1.5 left-1.5" src="../assets/Icon/email.png" alt="email" />
               </div>
               <div class="form-group mb-6 relative">
-                <input
+                <VField
                   type="password"
+                  name="密碼"
+                  :class="{ 'is-invalid': errors['密碼'] }"
                   class="form-control block w-full pl-9 pr-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="loginPassword"
+                  rules="required"
                   placeholder="請輸入您的密碼"
                 />
+                <ErrorMessage name="密碼" class="invalid-feedback" />
                 <img
                   class="absolute top-1.5 left-1.5"
                   src="../assets/Icon/password.png"
@@ -114,7 +122,7 @@
                   >訪客身分</router-link
                 >體驗，或是註冊會員
               </p>
-            </form>
+            </VForm>
           </div>
           <!-- 註冊頁 -->
           <div
@@ -123,33 +131,44 @@
             role="tabpanel"
             aria-labelledby="tabs-profile-tab"
           >
-            <form>
+            <VForm v-slot="{ errors }">
               <div class="form-group mb-6 relative">
-                <input
+                <VField
                   type="text"
+                  name="名稱"
+                  :class="{ 'is-invalid': errors['名稱'] }"
+                  rules="required"
                   class="form-control block w-full pl-9 pr-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="signUpName"
                   placeholder="請輸入您的暱稱、稱謂"
                 />
                 <i class="fa-regular fa-user absolute top-2.5 left-2.5"></i>
+                <ErrorMessage name="名稱" class="invalid-feedback" />
               </div>
-
               <div class="form-group mb-6 relative">
-                <input
+                <VField
                   type="email"
+                  name="信箱"
+                  :class="{ 'is-invalid': errors['信箱'] }"
+                  rules="required|email"
                   class="form-control block w-full pl-9 pr-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="signUpEmail"
                   placeholder="請輸入您的電子信箱"
                 />
+                <ErrorMessage name="信箱" class="invalid-feedback" />
                 <img class="absolute top-1.5 left-1.5" src="../assets/Icon/email.png" alt="email" />
               </div>
               <div class="form-group mb-6 relative">
-                <input
+                <VField
                   type="password"
+                  name="設定密碼"
+                  :class="{ 'is-invalid': errors['設定密碼'] }"
                   class="form-control block w-full pl-9 pr-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  rules="required"
                   id="signUpPassword"
                   placeholder="請輸入您的密碼"
                 />
+                <ErrorMessage name="設定密碼" class="invalid-feedback" />
                 <img
                   class="absolute top-1.5 left-1.5"
                   src="../assets/Icon/password.png"
@@ -162,12 +181,16 @@
                 />
               </div>
               <div class="form-group mb-6 relative">
-                <input
+                <VField
+                  name="確認密碼"
+                  :class="{ 'is-invalid': errors['確認密碼'] }"
+                  rules="required"
                   type="password"
                   class="form-control block w-full pl-9 pr-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="signUpConfirmPassword"
                   placeholder="請重新輸入您的密碼"
                 />
+                <ErrorMessage name="確認密碼" class="invalid-feedback" />
                 <img
                   class="absolute top-1.5 left-1.5"
                   src="../assets/Icon/password.png"
@@ -210,7 +233,7 @@
                   >登入頁</router-link
                 >
               </p>
-            </form>
+            </VForm>
           </div>
         </div>
       </div>

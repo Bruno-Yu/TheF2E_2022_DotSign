@@ -176,8 +176,7 @@ export default {
       pdf.save(`${this.ReName}.pdf`);
     },
     goFront() {
-      console.log('有被觸發到');
-      this.$router.push('/upload');
+      this.$router.push('/');
     },
   },
   // mounted() {

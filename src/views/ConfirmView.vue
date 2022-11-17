@@ -14,27 +14,31 @@
       class="rounded bg-n1 mt-8 w-full md:max-w-5xl mx-auto xl:rounded xl:mt-[80px] px-4 py-6 relative"
     >
       <p class="text-2xl font-bold absolute left-0 right-0 top-[-38px]">
-        點點簽 - 訪客試用版<span class="text-sm ml-3 align-middle"
+        點點簽 - 訪客試用版<span class="hidden sm:inline text-sm ml-3 align-middle"
           >( 正式版請到 <router-link class="text-p1" to="./login">連結</router-link> )</span
         >
       </p>
       <FunNav :stage="1" @next="goToEdit" />
       <router-link class="font-bold text-p1 block mb-6" to="./upload">&lt; 上一步</router-link>
-      <form>
+      <VForm v-slot="{ errors }">
         <div class="form-group mb-6">
           <label
             for="fileName"
             class="form-label inline-block mb-2 font-bold after:content-['*'] after:ml-0.5 after:text-red-500"
             >文件名稱</label
           >
-          <input
+          <VField
             type="text"
+            name="檔案名稱"
+            :class="{ 'is-invalid': errors['檔案名稱'] }"
+            rules="required"
             class="form-control block w-full px-3 py-1.5 text-base font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="fileName"
             aria-describedby="fileName"
             v-model="ReName"
             placeholder="請輸入想要的名稱"
           />
+          <ErrorMessage name="檔案名稱" class="invalid-feedback" />
         </div>
         <div class="form-group mb-6">
           <label
@@ -42,13 +46,17 @@
             class="form-label inline-block mb-2 font-bold after:content-['*'] after:ml-0.5 after:text-red-500"
             >上傳文件</label
           >
-          <input
+          <VField
             type="text"
+            name="載入檔案"
+            :class="{ 'is-invalid': errors['載入檔案'] }"
+            rules="required"
             class="form-control block w-full px-3 py-1.5 text-base font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="uploadFile"
             :value="fileName"
             readonly
           />
+          <ErrorMessage name="載入檔案" class="invalid-feedback" />
         </div>
         <div class="form-group mb-10">
           <label for="fileTag" class="form-label inline-block mb-2 font-bold">建立標籤</label>
@@ -102,7 +110,7 @@
           </button>
           {{ tags }}
         </div>
-      </form>
+      </VForm>
     </div>
   </div>
 </template>
