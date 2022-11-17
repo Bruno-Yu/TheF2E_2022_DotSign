@@ -1,7 +1,7 @@
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <!-- eslint-disable max-len -->
 <template>
-  <div class="bg-n3">
+  <div class="bg-n3 min-h-screen">
     <FunNav :stage="3" @front="goFront" @next="downloadedFile" />
     <!-- EditView 新增的 -->
     <nav class="flex items-center w-full justify-between bg-n1 px-4 py-5 lg:px-8 lg:py-6 shadow-lg">
@@ -34,16 +34,17 @@
     </nav>
     <!-- sideNav -->
 
-    <div class="relative h-screen">
+    <div class="relative py-4 flex justify-center">
       <img
-        class="absolute top-[20px] left-[20px] drop-shadow-lg block overflow-scroll"
+        :class="{ hidden: finalFile ? false : true }"
+        class="drop-shadow-lg block overflow-scroll"
         :src="finalFile"
         alt=""
         @mousedown="mouseDownHandler"
       />
       <!-- <canvas id="fabricCanvas"></canvas> -->
       <!-- function buttons 1-->
-      <div class="flex items-center justify-center absolute left-8 top-6 z-10 rounded">
+      <!-- <div class="flex items-center justify-center absolute left-8 top-6 z-10 rounded">
         <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group">
           <button
             type="button"
@@ -66,7 +67,7 @@
             <img src="../assets/Icon/minimize.png" alt="minimize" />
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <SignModal />

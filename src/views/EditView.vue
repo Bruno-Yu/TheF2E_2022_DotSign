@@ -1,15 +1,14 @@
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <!-- eslint-disable max-len -->
 <template>
-  <div class="bg-n3">
+  <div class="bg-n3 flex min-h-screen flex-col overflow-clip">
     <FunNav :stage="2" @next="confirmedEdit" />
     <!-- EditView 新增的 -->
-    <nav class="flex w-full items-center justify-between bg-n1 px-4 py-5 lg:px-8 lg:py-6 shadow-lg">
-      <ul class="list-none flex space-x-7">
-        <li class="flex items-center">
+    <nav class="flex items-center justify-between bg-n1 px-4 py-5 lg:px-8 lg:py-6 shadow-lg">
+      <ul class="list-none flex w-full">
+        <li class="flex items-center xl:mr-5">
           <img class="mr-2" src="../assets/Icon/write.png" alt="write" />
           <input type="text" class="font-bold" v-model="ReName" />
-          <!-- <p class="font-bold">產品測試文件</p> -->
         </li>
         <li class="flex items-center">
           <img class="mr-2" src="../assets/Icon/Tag.png" alt="Tag" />
@@ -25,17 +24,18 @@
             </span>
           </div>
         </li>
+        <li class="ml-auto">
+          <button type="button" class="flex items-center whitespace-nowrap pr-1">
+            <img class="inline-block" src="../assets/Icon/View.png" alt="View" />
+            <p>預覽</p>
+          </button>
+        </li>
       </ul>
-      <!-- 加上頁數呈現 -->
-      <button type="button" class="flex items-center whitespace-nowrap pr-1">
-        <img class="inline-block" src="../assets/Icon/View.png" alt="View" />
-        <p>預覽</p>
-      </button>
     </nav>
-    <div class="flex">
+    <div class="flex grow w-full overflow-x-scroll">
       <!-- sideNav -->
-      <div class="hidden w-1/5 shadow-md h-screen bg-white px-1 lg:block">
-        <ul class="flex flex-col h-fit">
+      <div class="hidden w-1/5 shadow-md bg-white px-1 lg:block">
+        <ul class="flex flex-col grow">
           <li class="relative">
             <button
               type="button"
@@ -69,33 +69,29 @@
           </li>
         </ul>
       </div>
-      <div class="relative w-full lg:w-4/5">
-        <canvas
-          class="absolute top-[20px] left-[20px] drop-shadow-lg overflow-scroll"
-          id="canvas"
-          @mousedown="mouseDownHandler"
-        ></canvas>
+      <div class="relative w-full py-4 pl-4 lg:w-4/5">
+        <canvas class="absolute drop-shadow-lg" id="canvas" @mousedown="mouseDownHandler"></canvas>
         <!-- <canvas id="fabricCanvas"></canvas> -->
         <!-- function buttons 1-->
         <div class="flex items-center justify-center absolute left-8 top-6 z-10 rounded">
           <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group">
             <button
               type="button"
-              class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
+              class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               @click="scaleUp"
             >
               <img src="../assets/Icon/plus.png" alt="plus" />
             </button>
             <button
               type="button"
-              class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
+              class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               @click="scaleDown"
             >
               <img src="../assets/Icon/minus.png" alt="minus" />
             </button>
             <button
               type="button"
-              class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
+              class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               @click="clipMethod"
             >
               <img src="../assets/Icon/minimize.png" alt="minimize" />
@@ -107,7 +103,7 @@
           <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group">
             <button
               type="button"
-              class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
+              class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               data-bs-toggle="modal"
               data-bs-target="#signModal"
             >
@@ -115,19 +111,55 @@
             </button>
             <button
               type="button"
-              class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
+              class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               @click="addDate"
             >
               <img src="../assets/Icon/Calendar.png" alt="Calendar" />
             </button>
             <button
               type="button"
-              class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
+              class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               @click="addText"
             >
               <img src="../assets/Icon/text.png" alt="text" />
             </button>
           </div>
+        </div>
+        <!-- pagination -->
+        <div
+          class="fixed left-8 top-[470px] lg:left-0 lg:right-8 xl:top-auto xl:bottom-5 flex justify-end"
+        >
+          <nav aria-label="Page navigation example">
+            <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group">
+              <button
+                :disabled="currentNum === 1 ? true : false"
+                type="button"
+                data-btn="prevPage"
+                class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 leading-tight transition duration-150 ease-in-out"
+                aria-label="Previous"
+                @click="switchPage"
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </button>
+              <button
+                disabled
+                type="button"
+                class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 leading-tight transition duration-150 ease-in-out"
+              >
+                {{ currentNum }} / {{ totalNum }}
+              </button>
+              <button
+                :disabled="currentNum === totalNum ? true : false"
+                data-btn="nextPage"
+                type="button"
+                class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 leading-tight transition duration-150 ease-in-out"
+                aria-label="Next"
+                @click="switchPage"
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </button>
+            </div>
+          </nav>
         </div>
       </div>
     </div>
@@ -150,7 +182,7 @@ export default {
       ctx: null,
       canvas: null,
       scale: 1,
-      num: 1,
+      currentNum: 1,
       totalNum: 1,
       offsetX: '',
       offsetY: '',
@@ -174,6 +206,14 @@ export default {
   },
   components: { FunNav, SignModal },
   methods: {
+    switchPage(e) {
+      if (e.target.dataset.btn === 'prevPage') {
+        this.currentNum -= 1;
+      } else {
+        this.currentNum += 1;
+      }
+      this.renderAll();
+    },
     async renderPDF() {
       // 將 base64 中的前綴刪去，並進行解碼
       // console.log(this.pdfFile); // null?
@@ -184,7 +224,7 @@ export default {
       // const { scale } = this;
       // eslint-disable-next-line no-undef
       const pdfDoc = await pdfjsLib.getDocument(data).promise;
-      const pdfPage = await pdfDoc.getPage(this.num);
+      const pdfPage = await pdfDoc.getPage(this.currentNum);
       // 將pdf 轉成 符合螢幕大小的比例
       // 取得目前的螢幕大小
       const viewport = pdfPage.getViewport({ scale: window.devicePixelRatio });
@@ -233,7 +273,8 @@ export default {
       // eslint-disable-next-line no-undef
       const pdfDoc = await pdfjsLib.getDocument(data).promise;
       // 總頁數
-      this.totalNum = pdfDoc.pdf.numPages;
+      this.totalNum = pdfDoc.numPages;
+      console.log(this.totalNum);
     },
     scaleUp() {
       this.scale += 0.1;
@@ -356,6 +397,7 @@ export default {
     },
   },
   mounted() {
+    this.getTotalNum();
     // this.canvas = document.querySelector('#canvas');
     // this.ctx = this.canvas.getContext('2d');
     // this.renderPDF();

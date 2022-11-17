@@ -43,7 +43,7 @@
               </button> -->
             <label
               for="formFile"
-              class="px-5 py-2.5 border-p1 border block text-p1 font-bold mb-6 whitespace-nowrap ml-8 leading-tight uppercase rounded hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
+              class="px-3 xl:px-5 py-2.5 border-p1 border block text-p1 font-bold mb-6 whitespace-nowrap leading-tight uppercase rounded hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
               >選擇檔案 (PDF / png)
               <input
                 class="absolute left-0 top-0 bottom-0 right-0 opacity-0"
@@ -54,7 +54,7 @@
               />
             </label>
 
-            <p class="text-center text-n6 indent-8 font-medium">或直接拖放檔案進來</p>
+            <p class="text-center text-n6 font-medium">或直接拖放檔案進來</p>
           </div>
           <!-- 有檔案時 -->
           <div v-else class="flex flex-col justify-center items-center">
@@ -124,14 +124,11 @@ export default {
   },
   components: { ModalNote, FunNav },
   watch: {
-    percent: {
-      handler(n) {
-        if (n === 100) {
-          clearInterval(this.addPercent);
-          this.$router.push('./confirm');
-        }
-      },
-      deep: true,
+    percent(n) {
+      if (n === 100) {
+        clearInterval(this.addPercent);
+        this.$router.push('./confirm');
+      }
     },
   },
   methods: {
