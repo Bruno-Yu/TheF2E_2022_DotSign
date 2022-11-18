@@ -57,15 +57,22 @@ export const useUploadStore = defineStore('useEdit', {
       this.history = JSON.parse(localStorage.getItem('historyFiles'));
     },
     downloadDoc(e) {
-      const index = e.target.dataset.btnDownload;
+      let download = {};
+      if (!e?.target?.dataset?.btnDownload) {
+        download.file = this.finalFile;
+        download.name = this.ReName;
+      } else {
+        const index = e.target.dataset.btnDownload;
+        download = this.history[index];
+      }
       // eslint-disable-next-line no-undef, new-cap
       const pdf = new jsPDF();
       // 設定背景在 PDF 中的位置及大小
       const { width } = pdf.internal.pageSize;
       const { height } = pdf.internal.pageSize;
-      pdf.addImage(this.history[index].file, 'png', 0, 0, width, height);
+      pdf.addImage(download.file, 'png', 0, 0, width, height);
       // 將檔案取名並下載
-      pdf.save(`${this.history[index].name}.pdf`);
+      pdf.save(`${download.name}.pdf`);
     },
     deleteDoc(e) {
       // 注意: 這邊要用小駝峰

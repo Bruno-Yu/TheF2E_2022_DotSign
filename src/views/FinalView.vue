@@ -2,39 +2,7 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="bg-n3 min-h-screen">
-    <FunNav :stage="3" @front="goFront" @next="downloadedFile" />
-    <!-- EditView 新增的 -->
-    <nav class="flex items-center w-full justify-between bg-n1 px-4 py-5 lg:px-8 lg:py-6 shadow-lg">
-      <ul class="list-none flex space-x-7">
-        <li class="flex items-center">
-          <img class="mr-2" src="../assets/Icon/write.png" alt="write" />
-          <input type="text" class="font-bold" v-model="ReName" readonly />
-          <!-- <p class="font-bold">產品測試文件</p> -->
-        </li>
-        <li class="flex items-center">
-          <img class="mr-2" src="../assets/Icon/Tag.png" alt="Tag" />
-          <p class="font-bold lg:hidden">{{ tags.length ? tags.length : 0 }}</p>
-          <div class="hidden lg:flex items-center grow-0">
-            <span class="py-2 invisible">:</span>
-            <span
-              v-for="(item, index) in tags"
-              class="bg-n2 px-4 py-1 mr-1 rounded-full"
-              :key="index"
-            >
-              <button type="button" @click="deleteTag(item)" class="mx-1">x</button>{{ item }}
-            </span>
-          </div>
-        </li>
-      </ul>
-      <!-- 加上頁數呈現 -->
-      <div
-        class="rounded-full border-n6 border-[1.5px] text-center text-sm w-5 h-5 text-n6 align-top"
-      >
-        ?
-      </div>
-    </nav>
-    <!-- sideNav -->
-
+    <FunNav :stage="3" @front="goFront" @next="downloadDoc" />
     <div class="relative py-4 flex justify-center">
       <img
         :class="{ hidden: finalFile ? false : true }"
@@ -75,7 +43,7 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import { useUploadStore } from '../stores/userEdit';
 import SignModal from '../components/SignModal.vue';
 import FunNav from '../components/FunNav.vue';
@@ -102,6 +70,7 @@ export default {
   },
   components: { FunNav, SignModal },
   methods: {
+    ...mapActions(useUploadStore, ['downloadDoc']),
     async renderAll() {
       // eslint-disable-next-line no-undef
       this.canvas = new fabric.Canvas('canvas');
@@ -166,16 +135,6 @@ export default {
     confirmedEdit() {
       this.finalFile = this.canvas.toDataURL('image/png');
       this.$router.push('./final');
-    },
-    downloadedFile() {
-      // eslint-disable-next-line no-undef, new-cap
-      const pdf = new jsPDF();
-      // 設定背景在 PDF 中的位置及大小
-      const { width } = pdf.internal.pageSize;
-      const { height } = pdf.internal.pageSize;
-      pdf.addImage(this.finalFile, 'png', 0, 0, width, height);
-      // 將檔案取名並下載
-      pdf.save(`${this.ReName}.pdf`);
     },
     goFront() {
       this.$router.push('/');
