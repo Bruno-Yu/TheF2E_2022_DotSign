@@ -18,6 +18,7 @@ export const useUploadStore = defineStore('useEdit', {
     signatures: [],
     images: [roundedStamp, squareStamp],
     chosenSign: null,
+    history: [],
   }),
   actions: {
     upload(event) {
@@ -47,6 +48,30 @@ export const useUploadStore = defineStore('useEdit', {
         this.pdfFile = typedarray;
         this.fileName = name;
       });
+    },
+    getHistory() {
+      // 若沒有該筆local storage的key 會回傳 null
+      if (localStorage.getItem('historyFiles') === null) {
+        return;
+      }
+      this.history = JSON.parse(localStorage.getItem('historyFiles'));
+    },
+    downloadDoc(e) {
+      const index = e.target.dataset.btnDownload;
+      // eslint-disable-next-line no-undef, new-cap
+      const pdf = new jsPDF();
+      // 設定背景在 PDF 中的位置及大小
+      const { width } = pdf.internal.pageSize;
+      const { height } = pdf.internal.pageSize;
+      pdf.addImage(this.history[index].file, 'png', 0, 0, width, height);
+      // 將檔案取名並下載
+      pdf.save(`${this.history[index].name}.pdf`);
+    },
+    deleteDoc(e) {
+      // 注意: 這邊要用小駝峰
+      const index = e.target.dataset.btnDelete;
+      this.history.splice(index, 1);
+      localStorage.setItem('historyFiles', JSON.stringify(this.history));
     },
   },
 });

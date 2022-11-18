@@ -25,10 +25,11 @@
           </div>
         </li>
         <li class="ml-auto">
-          <button type="button" class="flex items-center whitespace-nowrap pr-1">
-            <img class="inline-block" src="../assets/Icon/View.png" alt="View" />
-            <p>預覽</p>
-          </button>
+          <div
+            class="rounded-full border-n6 border-[1.5px] text-center text-sm w-5 h-5 text-n6 align-top"
+          >
+            ?
+          </div>
         </li>
       </ul>
     </nav>
@@ -274,7 +275,6 @@ export default {
       const pdfDoc = await pdfjsLib.getDocument(data).promise;
       // 總頁數
       this.totalNum = pdfDoc.numPages;
-      console.log(this.totalNum);
     },
     scaleUp() {
       this.scale += 0.1;
@@ -347,9 +347,7 @@ export default {
       this.canvas.add(this.userClipPath);
     },
     clipConfirm() {
-      console.log('clip!');
       const newImgCrop = this.userClipPath.getBoundingRect();
-      console.log(newImgCrop);
       this.canvas.setWidth(newImgCrop.width);
       this.canvas.setHeight(newImgCrop.height);
       // 這邊原本是圖片
@@ -393,6 +391,22 @@ export default {
     },
     confirmedEdit() {
       this.finalFile = this.canvas.toDataURL('image/png');
+      // 存到localStorage
+      const newFile = {};
+      newFile.file = `${this.finalFile}`;
+      newFile.name = `${this.ReName}`;
+      // localStorage.setItem(`${this.ReName}`, this.finalFile);
+      if (localStorage.getItem('historyFiles') === null) {
+        const storageArray = [];
+        storageArray.push(newFile);
+        localStorage.setItem('historyFiles', JSON.stringify(storageArray));
+        // 當localStorage已存在資料陣列，指定一個內容與陣列資料庫相同的陣列
+      } else {
+        const storageArray = JSON.parse(localStorage.getItem('historyFiles'));
+        storageArray.push(newFile);
+        localStorage.setItem('historyFiles', JSON.stringify(storageArray));
+      }
+
       this.$router.push('./final');
     },
   },

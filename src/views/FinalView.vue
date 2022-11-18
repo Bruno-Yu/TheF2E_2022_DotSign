@@ -27,10 +27,11 @@
         </li>
       </ul>
       <!-- 加上頁數呈現 -->
-      <button type="button" class="flex items-center whitespace-nowrap pr-1">
-        <img class="inline-block" src="../assets/Icon/View.png" alt="View" />
-        <p class="pl-1">預覽</p>
-      </button>
+      <div
+        class="rounded-full border-n6 border-[1.5px] text-center text-sm w-5 h-5 text-n6 align-top"
+      >
+        ?
+      </div>
     </nav>
     <!-- sideNav -->
 
