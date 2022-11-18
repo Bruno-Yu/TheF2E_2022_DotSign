@@ -1,5 +1,11 @@
 <!-- eslint-disable max-len -->
 <template>
+  <p class="text-2xl font-bold absolute left-0 right-0 top-[-38px]" :class="{ hidden: (stage === 2 || stage === 3) }"
+>
+        點點簽 - 試用版<span class="hidden sm:inline text-sm ml-3 align-middle"
+          >( 正式版請到 <router-link class="text-p1" to="./login">連結</router-link> )</span
+        >
+      </p>
   <nav class="flex items-center justify-between bg-n1 px-4 lg:px-8 py-5 lg:py-6">
     <div class="container flex flex-wrap grow-1 items-center justify-between">
       <ul class="list-none flex space-x-9 lg:space-x-12">

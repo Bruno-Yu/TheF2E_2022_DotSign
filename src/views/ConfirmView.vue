@@ -13,11 +13,6 @@
     <div
       class="rounded bg-n1 mt-8 w-full md:max-w-5xl mx-auto xl:rounded xl:mt-[80px] px-4 py-6 relative"
     >
-      <p class="text-2xl font-bold absolute left-0 right-0 top-[-38px]">
-        點點簽 - 訪客試用版<span class="hidden sm:inline text-sm ml-3 align-middle"
-          >( 正式版請到 <router-link class="text-p1" to="./login">連結</router-link> )</span
-        >
-      </p>
       <FunNav :stage="1" @next="goToEdit" />
       <router-link class="font-bold text-p1 block mb-6" to="./upload">&lt; 上一步</router-link>
       <VForm v-slot="{ errors }">
