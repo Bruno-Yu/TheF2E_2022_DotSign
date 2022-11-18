@@ -2,7 +2,7 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="bg-n3 flex min-h-screen flex-col overflow-clip">
-    <FunNav :stage="2" @next="confirmedEdit" />
+    <FunNav :stage="2" @next="confirmedEdit" @cancel="openModal" />
     <div class="flex grow w-full overflow-x-scroll">
       <!-- sideNav -->
       <div class="hidden w-1/5 shadow-md bg-white px-1 lg:block">
@@ -136,12 +136,14 @@
     </div>
   </div>
   <SignModal />
+  <ModalNote ref="modal" @cancel="hideModal" />
 </template>
 
 <script>
 import { mapState, mapWritableState } from 'pinia';
 import { useUploadStore } from '../stores/userEdit';
 import SignModal from '../components/SignModal.vue';
+import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
 // eslint-disable-next-line no-undef
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
@@ -175,7 +177,7 @@ export default {
       this.canvas.add(n);
     },
   },
-  components: { FunNav, SignModal },
+  components: { FunNav, SignModal, ModalNote },
   methods: {
     switchPage(e) {
       if (e.target.dataset.btn === 'prevPage') {
@@ -378,6 +380,12 @@ export default {
       }
 
       this.$router.push('./final');
+    },
+    hideModal() {
+      this.$refs.modal.hideModal();
+    },
+    openModal() {
+      this.$refs.modal.openModal();
     },
   },
   mounted() {

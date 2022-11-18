@@ -2,20 +2,18 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="bg-p2 w-full h-screen flex flex-col items-center px-4 xl:relative">
-    <img
-      class="w-1/3 mb-8 pt-5 lg:w-[219px] lg:h-auto lg:mb-10"
-      src="../assets/images/Logo.png"
-      alt="logo"
-    />
+    <router-link class="block w-1/3 mb-8 pt-5 lg:w-[219px] lg:mb-10" to="./login"
+      ><img class="w-full lg:h-auto" src="../assets/images/Logo.png" alt="logo"
+    /></router-link>
 
     <!-- navbar -->
     <!-- content -->
     <div
       class="rounded bg-n1 mt-8 w-full md:max-w-5xl mx-auto xl:rounded xl:mt-[80px] px-4 py-6 relative"
     >
-      <FunNav :stage="1" @next="goToEdit" />
-      <router-link class="font-bold text-p1 block mb-6" to="./upload">&lt; 上一步</router-link>
-      <VForm v-slot="{ errors }">
+      <FunNav :stage="1" @next="goToEdit" @cancel="openModal" />
+      <button class="font-bold text-p1 block mb-6" @click="openModal">&lt; 上一步</button>
+      <VForm v-slot="{ errors }" ref="form">
         <div class="form-group mb-6">
           <label
             for="fileName"
@@ -55,10 +53,6 @@
         </div>
         <div class="form-group mb-10">
           <label for="fileTag" class="form-label inline-block mb-2 font-bold">建立標籤</label>
-
-          <!-- aria-expanded="false" aria-controls="collapseTags"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseTags" -->
           <button
             type="button"
             class="block w-full px-3 py-1.5 text-base font-normal border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:border-blue-600 focus:outline-none"
@@ -109,12 +103,14 @@
       </VForm>
     </div>
   </div>
+  <ModalNote ref="modal" @cancel="hideModal" />
 </template>
 
 <script>
 import { mapState, mapWritableState } from 'pinia';
 import Collapse from 'tw-elements/dist/src/js/bs/dist/collapse';
 import { useUploadStore } from '../stores/userEdit';
+import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
 
 // import emitter from '../libs/emitter';
@@ -124,13 +120,15 @@ export default {
     return {
       newTag: '',
       collapse: null,
+      // allowNext: false,
+      allowNext: false,
     };
   },
   computed: {
     ...mapState(useUploadStore, ['fileName']),
     ...mapWritableState(useUploadStore, ['ReName', 'tags', 'tagsHistory']),
   },
-  components: { FunNav },
+  components: { FunNav, ModalNote },
   methods: {
     addTag(e, item = '') {
       if (this.tags.indexOf(this.newTag) > 0 || this.tags.indexOf(item) > 0) return;
@@ -146,13 +144,25 @@ export default {
       }
     },
     goToEdit() {
-      this.$router.push('./edit');
+      this.$refs.form.validate().then((res) => {
+        if (!res.valid) {
+          alert('請完成必填部分');
+        } else {
+          this.$router.push('./edit');
+        }
+      });
     },
     show() {
       this.collapse.show();
     },
     hide() {
       this.collapse.hide();
+    },
+    hideModal() {
+      this.$refs.modal.hideModal();
+    },
+    openModal() {
+      this.$refs.modal.openModal();
     },
     deleteTag(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
@@ -167,6 +177,3 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

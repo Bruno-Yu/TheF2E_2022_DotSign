@@ -8,12 +8,9 @@
       alt="login_avatar"
     />
     <!-- 上傳檔案 -->
-    <img
-      class="w-1/3 mb-8 pt-5 lg:w-[219px] lg:h-auto lg:mb-10"
-      src="../assets/images/Logo.png"
-      alt="logo"
-    />
-
+    <router-link class="block w-1/3 mb-8 pt-5 lg:w-[219px] lg:mb-10" to="./login"
+      ><img class="w-full lg:h-auto" src="../assets/images/Logo.png" alt="logo"
+    /></router-link>
     <div class="bg-n1 mt-8 w-full max-w-5xl mx-auto xl:rounded xl:mt-[80px] relative">
       <!-- tabs -->
       <FunNav
@@ -22,9 +19,7 @@
         @cancel="pauseAndOpen"
         @next="goToConfirm"
       />
-
       <!-- tabs content -->
-
       <div class="px-4 py-10 xl:px-[60px]">
         <div
           class="border-dashed border-[1.5px] border-n6 min-h-[280px] flex justify-center items-center relative"
@@ -34,15 +29,9 @@
             v-if="percent ? false : true"
             class="flex w-full flex-col justify-center items-center"
           >
-            <!-- <button
-                type="button"
-                class="block px-5 py-2.5 border-p1 border text-p1 font-bold mb-6 whitespace-nowrap ml-8 leading-tight uppercase rounded hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-              >
-                選擇檔案 (PDF / png)
-              </button> -->
             <label
               for="formFile"
-              class="px-3 xl:px-5 py-2.5 border-p1 border block text-p1 font-bold mb-6 whitespace-nowrap leading-tight uppercase rounded hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
+              class="relative z-20 cursor-pointer px-3 xl:px-5 py-2.5 border-p1 border block text-p1 font-bold mb-6 whitespace-nowrap leading-tight uppercase rounded hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
               >選擇檔案 (PDF / png)
               <input
                 class="absolute left-0 top-0 bottom-0 right-0 opacity-0"
@@ -52,7 +41,6 @@
                 @change="countUp"
               />
             </label>
-
             <p class="text-center text-n6 font-medium">或直接拖放檔案進來</p>
           </div>
           <!-- 有檔案時 -->
@@ -107,7 +95,6 @@ import { mapState, mapActions } from 'pinia';
 import { useUploadStore } from '../stores/userEdit';
 import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
-// import modalMixin from '../mixins/modalMixin';
 
 export default {
   data() {

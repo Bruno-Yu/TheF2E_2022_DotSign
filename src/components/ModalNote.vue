@@ -68,9 +68,9 @@ export default {
   emits: ['cancel'],
   methods: {
     confirm() {
-      window.location.reload();
-      this.$router.push('/');
+      this.$router.push('./');
       this.hideModal();
+      // window.location.reload();
     },
     hideEmit() {
       this.$emit('cancel');
