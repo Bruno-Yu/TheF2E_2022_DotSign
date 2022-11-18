@@ -16,7 +16,12 @@
 
     <div class="bg-n1 mt-8 w-full max-w-5xl mx-auto xl:rounded xl:mt-[80px] relative">
       <!-- tabs -->
-      <FunNav :stage="0" @next="goToConfirm" />
+      <FunNav
+        :stage="0"
+        :allow-next="percent ? false : true"
+        @cancel="pauseAndOpen"
+        @next="goToConfirm"
+      />
 
       <!-- tabs content -->
 
@@ -83,8 +88,7 @@
             <button
               type="button"
               class="mt-4 inline-block px-3 py-1.5 border-p1 border text-p1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModalCenter"
+              @click="pauseAndOpen"
             >
               取消
             </button>
@@ -94,7 +98,7 @@
       </div>
     </div>
   </div>
-  <ModalNote />
+  <ModalNote ref="modal" @cancel="resumeCounting" />
 </template>
 
 <script>
@@ -103,6 +107,7 @@ import { mapState, mapActions } from 'pinia';
 import { useUploadStore } from '../stores/userEdit';
 import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
+// import modalMixin from '../mixins/modalMixin';
 
 export default {
   data() {
@@ -111,6 +116,7 @@ export default {
       percent: 0,
       ctx: null,
       canvas: null,
+      repeatAdd: null,
     };
   },
   computed: {
@@ -120,7 +126,7 @@ export default {
   watch: {
     percent(n) {
       if (n === 100) {
-        clearInterval(this.addPercent);
+        clearInterval(this.repeatAdd);
         this.$router.push('./confirm');
       }
     },
@@ -130,16 +136,25 @@ export default {
     countUp(e) {
       this.upload(e);
       if (this.percent < 100) {
-        setInterval(() => {
-          this.addPercent();
-        }, 100);
+        this.addPercent();
       }
     },
     addPercent() {
-      this.percent += 10;
+      this.repeatAdd = setInterval(() => {
+        this.percent += 10;
+      }, 500);
     },
     goToConfirm() {
       this.$router.push('./confirm');
+    },
+    pauseAndOpen() {
+      clearInterval(this.repeatAdd);
+      this.$refs.modal.openModal();
+    },
+    resumeCounting() {
+      if (this.percent > 0) {
+        this.addPercent();
+      }
     },
   },
 };

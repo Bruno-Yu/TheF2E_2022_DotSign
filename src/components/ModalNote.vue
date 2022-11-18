@@ -8,6 +8,7 @@
       aria-labelledby="exampleModalCenterTitle"
       aria-modal="true"
       role="dialog"
+      ref="modal"
     >
       <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
         <div
@@ -22,9 +23,10 @@
             <button
               type="button"
               class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-              data-bs-dismiss="modal"
               aria-label="Close"
+              @click="hideModal"
             ></button>
+            <!-- data-bs-dismiss="modal" -->
           </div>
           <div class="modal-body relative p-4">
             <p>確定要放棄上傳文件嗎?</p>
@@ -35,13 +37,14 @@
             <button
               type="button"
               class="inline-block px-6 py-2.5 border-p1 text-p1 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out"
-              data-bs-dismiss="modal"
+              @click="hideEmit"
             >
               取消
             </button>
             <button
               type="button"
               class="inline-block px-6 py-2.5 bg-p1 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+              @click="confirm"
             >
               確認
             </button>
@@ -51,3 +54,28 @@
     </div>
   </div>
 </template>
+
+<script>
+import modalMixin from '../mixins/modalMixin';
+
+export default {
+  data() {
+    return {
+      modal: null,
+    };
+  },
+  mixins: [modalMixin],
+  emits: ['cancel'],
+  methods: {
+    confirm() {
+      window.location.reload();
+      this.$router.push('/');
+      this.hideModal();
+    },
+    hideEmit() {
+      this.$emit('cancel');
+      this.hideModal();
+    },
+  },
+};
+</script>

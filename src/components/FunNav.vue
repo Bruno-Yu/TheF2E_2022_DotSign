@@ -1,11 +1,13 @@
 <!-- eslint-disable max-len -->
 <template>
-  <p class="text-2xl font-bold absolute left-0 right-0 top-[-38px]" :class="{ hidden: (stage === 2 || stage === 3) }"
->
-        點點簽 - 試用版<span class="hidden sm:inline text-sm ml-3 align-middle"
-          >( 正式版請到 <router-link class="text-p1" to="./login">連結</router-link> )</span
-        >
-      </p>
+  <p
+    class="text-2xl font-bold absolute left-0 right-0 top-[-38px]"
+    :class="{ hidden: stage === 2 || stage === 3 }"
+  >
+    點點簽 - 試用版<span class="hidden sm:inline text-sm ml-3 align-middle"
+      >( 正式版請到 <router-link class="text-p1" to="./login">連結</router-link> )</span
+    >
+  </p>
   <nav class="flex items-center justify-between bg-n1 px-4 lg:px-8 py-5 lg:py-6">
     <div class="container flex flex-wrap grow-1 items-center justify-between">
       <ul class="list-none flex space-x-9 lg:space-x-12">
@@ -65,7 +67,7 @@
         v-if="stage === 3"
         type="button"
         class="hidden lg:inline-block px-5 py-2.5 border-p1 border text-p1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-        @click="goToFront"
+        @click="$emit('front')"
       >
         返回主頁
       </button>
@@ -73,16 +75,16 @@
         v-else
         type="button"
         class="hidden lg:inline-block px-5 py-2.5 border-p1 border text-p1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModalCenter"
+        @click="$emit('cancel')"
       >
         取消
       </button>
 
       <button
         type="button"
-        class="hidden lg:inline-block px-5 py-2.5 ml-4 bg-p1 border text-n1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-        @click="pressNext"
+        :disabled="allowNext"
+        class="hidden lg:inline-block px-5 py-2.5 ml-4 bg-p1 border text-n1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg disabled:shadow-none disabled:bg-n5 transition duration-150 ease-in-out"
+        @click="$emit('next')"
         :class="{ 'lg:hidden': stage == 0 ? true : false }"
       >
         {{ stage === 3 ? `下載檔案` : `下一步` }}
@@ -96,7 +98,7 @@
         v-if="stage === 3"
         type="button"
         class="inline-block px-3 py-1.5 border-p1 border text-p1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-        @click="goToFront"
+        @click="$emit('front')"
       >
         返回主頁
       </button>
@@ -105,15 +107,15 @@
         v-else
         type="button"
         class="inline-block px-3 py-1.5 border-p1 border text-p1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModalCenter"
+        @click="$emit('cancel')"
       >
         取消
       </button>
       <button
+        :disabled="allowNext"
         type="button"
-        class="inline-block px-3 py-1.5 ml-4 bg-p1 border text-n1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
-        @click="pressNext"
+        class="inline-block px-3 py-1.5 ml-4 bg-p1 border text-n1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg disabled:shadow-none disabled:bg-n5 transition duration-150 ease-in-out"
+        @click="$emit('next')"
       >
         {{ stage === 3 ? `下載檔案` : `下一步` }}
       </button>
@@ -137,7 +139,7 @@ export default {
   //   };
   // },
   components: { HistoryDocs, FunNavEdit },
-  props: ['stage'],
+  props: ['stage', 'allowNext'],
   data() {
     return {
       process: ['上傳檔案', '確認上傳檔案', '製作簽署檔案', '下載簽署檔案'],
@@ -148,9 +150,6 @@ export default {
     ...mapWritableState(useUploadStore, ['ReName']),
   },
   methods: {
-    pressNext() {
-      this.$emit('next');
-    },
     goToFront() {
       this.$emit('front');
     },
