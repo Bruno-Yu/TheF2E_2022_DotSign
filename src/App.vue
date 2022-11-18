@@ -22,5 +22,11 @@
   .nav-tabs.nav-link {
     @apply text-n6;
   }
+  @layer utilities {
+    .collapse.show {
+      display: block;
+      visibility: visible;
+    }
+  }
 }
 </style>

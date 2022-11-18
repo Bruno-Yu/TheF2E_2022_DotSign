@@ -55,12 +55,12 @@
         </div>
         <div class="form-group mb-10">
           <label for="fileTag" class="form-label inline-block mb-2 font-bold">建立標籤</label>
+
+          <!-- aria-expanded="false" aria-controls="collapseTags"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTags" -->
           <button
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseExample"
-            aria-expanded="false"
-            aria-controls="collapseExample"
             class="block w-full px-3 py-1.5 text-base font-normal border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:border-blue-600 focus:outline-none"
           >
             <div class="flex items-center grow-0">
@@ -79,13 +79,15 @@
                 class="form-control"
                 id="fileTag"
                 v-model="newTag"
+                @focus.stop="show"
+                @blur.stop="hide"
                 @keyup.enter="addTag"
                 placeholder="請輸入標籤名稱"
               />
             </div>
-            <div class="collapse" id="collapseExample">
-              <div class="block p-6">
-                <span class="py-2 invisible">:</span>
+            <div class="collapse" id="collapseTags">
+              <div class="block pl-1 pb-3">
+                <span class="invisible">:</span>
                 <div
                   class="mb-2 text-left w-full"
                   v-for="(item, index) in tagsHistory"
@@ -103,7 +105,6 @@
               </div>
             </div>
           </button>
-          {{ tags }}
         </div>
       </VForm>
     </div>
@@ -112,6 +113,7 @@
 
 <script>
 import { mapState, mapWritableState } from 'pinia';
+import Collapse from 'tw-elements/dist/src/js/bs/dist/collapse';
 import { useUploadStore } from '../stores/userEdit';
 import FunNav from '../components/FunNav.vue';
 
@@ -121,6 +123,7 @@ export default {
   data() {
     return {
       newTag: '',
+      collapse: null,
     };
   },
   computed: {
@@ -145,13 +148,22 @@ export default {
     goToEdit() {
       this.$router.push('./edit');
     },
-
+    show() {
+      this.collapse.show();
+    },
+    hide() {
+      this.collapse.hide();
+    },
     deleteTag(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
     },
     deleteTagRecord(tag) {
       this.tagsHistory.splice(this.tags.indexOf(tag), 1);
     },
+  },
+  mounted() {
+    // 預設閉合狀態需要在建立Collapse 時設定
+    this.collapse = new Collapse('#collapseTags', { toggle: false });
   },
 };
 </script>
