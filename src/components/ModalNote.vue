@@ -26,7 +26,6 @@
               aria-label="Close"
               @click="hideModal"
             ></button>
-            <!-- data-bs-dismiss="modal" -->
           </div>
           <div class="modal-body relative p-4">
             <p>確定要放棄上傳文件嗎?</p>

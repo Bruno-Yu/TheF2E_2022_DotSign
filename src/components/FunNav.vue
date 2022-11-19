@@ -133,11 +133,6 @@ import HistoryDocs from './HistoryDocs.vue';
 import FunNavEdit from './FunNavEdit.vue';
 
 export default {
-  // data() {
-  //   return {
-  //     show: !(this.stage === 2 || 3),
-  //   };
-  // },
   components: { HistoryDocs, FunNavEdit },
   props: ['stage', 'allowNext'],
   data() {

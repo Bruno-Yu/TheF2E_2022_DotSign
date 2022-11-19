@@ -11,9 +11,10 @@
             <button
               type="button"
               class="flex w-full items-center whitespace-nowrap text-sm py-4 px-6 h-12 overflow-hidden text-ellipsis hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-              data-bs-toggle="modal"
-              data-bs-target="#signModal"
+              @click="signOpen"
             >
+              <!-- data-bs-toggle="modal"
+              data-bs-target="#signModal" -->
               <img class="inline-block mr-1" src="../assets/Icon/edit.png" alt="edit" />
               <p>簽名</p>
             </button>
@@ -75,9 +76,10 @@
             <button
               type="button"
               class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
-              data-bs-toggle="modal"
-              data-bs-target="#signModal"
+              @click="signOpen"
             >
+              <!-- data-bs-toggle="modal"
+              data-bs-target="#signModal" -->
               <img src="../assets/Icon/edit.png" alt="edit" />
             </button>
             <button
@@ -135,7 +137,7 @@
       </div>
     </div>
   </div>
-  <SignModal />
+  <SignModal ref="signModal" />
   <ModalNote ref="modal" @cancel="hideModal" />
 </template>
 
@@ -145,6 +147,7 @@ import { useUploadStore } from '../stores/userEdit';
 import SignModal from '../components/SignModal.vue';
 import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
+// import pdfJSMixin from '../mixins/pdfJSMixin';
 // eslint-disable-next-line no-undef
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
 // const Base64Prefix = 'data:application/pdf;base64,';
@@ -166,8 +169,9 @@ export default {
   },
   computed: {
     ...mapState(useUploadStore, ['pdfFile', 'chosenSign']),
-    ...mapWritableState(useUploadStore, ['ReName', 'tags', 'finalFile']),
+    ...mapWritableState(useUploadStore, ['ReName', 'tags', 'finalFile', 'signatures']),
   },
+  // mixins: [pdfJSMixin],
   watch: {
     chosenSign(n) {
       // console.log(n);
@@ -387,12 +391,15 @@ export default {
     openModal() {
       this.$refs.modal.openModal();
     },
+    signOpen() {
+      this.$refs.signModal.openModal();
+    },
+    signHide() {
+      this.$refs.signModal.hideModal();
+    },
   },
   mounted() {
     this.getTotalNum();
-    // this.canvas = document.querySelector('#canvas');
-    // this.ctx = this.canvas.getContext('2d');
-    // this.renderPDF();
     this.renderAll();
   },
 };

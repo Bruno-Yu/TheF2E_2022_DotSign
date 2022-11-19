@@ -71,6 +71,7 @@ export default {
   components: { FunNav, SignModal },
   methods: {
     ...mapActions(useUploadStore, ['downloadDoc']),
+    // 無用
     async renderAll() {
       // eslint-disable-next-line no-undef
       this.canvas = new fabric.Canvas('canvas');
@@ -86,6 +87,7 @@ export default {
       // // 將 PDF 畫面設定為背景 (也就是原本的pdf已變成純圖片)
       this.canvas.setBackgroundImage(data, this.canvas.renderAll.bind(this.canvas));
     },
+    // 無用
     mouseDownHandler(opt) {
       const evt = opt.e;
       this.isDragging = true;
@@ -100,17 +102,20 @@ export default {
       // document.addEventListener('mousemove', this.mousemoveHandler); //
       // document.addEventListener('mouseup', this.mouseUpHandler);
     },
+    // 無用
     mousemoveHandler(e) {
       // 用當前滑鼠位置減去這個相對元素的左上角位置，保證滑鼠所按位置拖拽
       this.canvas.style.left = `${e.clientX - this.offsetX}px`;
       this.canvas.style.top = `${e.clientY - this.offsetY}px`;
     }, // 當釋放滑鼠鍵時，刪除滑鼠移動事件和刪除滑鼠釋放事件
+    // 無用
     mouseUpHandler() {
       // 注意這邊是直接監聽mouseDownHandler的掛載目標，因此沒有對像
       document.removeEventListener('mousemove', this.mousemoveHandler);
       document.removeEventListener('mouseup', this.mouseUpHandler);
       this.canvas.style.cursor = 'default';
     },
+    // 這是 fabric的做法 無用
     scaleUp() {
       this.scale += 0.1;
       // this.renderPDF();
@@ -122,6 +127,7 @@ export default {
 
       // this.renderAll(); // 若用這個方法，會重新建立新的canvas img
     },
+    // 這是 fabric的做法 無用
     scaleDown() {
       this.scale -= 0.1;
       // this.renderPDF();
@@ -132,6 +138,7 @@ export default {
       });
       this.canvas.setZoom(this.scale);
     },
+    // 有用 勿刪
     confirmedEdit() {
       this.finalFile = this.canvas.toDataURL('image/png');
       this.$router.push('./final');

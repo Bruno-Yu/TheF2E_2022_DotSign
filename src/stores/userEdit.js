@@ -32,12 +32,8 @@ export const useUploadStore = defineStore('useEdit', {
       const { name } = file;
       // 產生fileReader物件
       const fileReader = new FileReader();
-
-      // ----暫時刪去
       // 是FileReader的方法，將資料讀取blob檔，當讀取完畢，會回傳loadend事件 (MDN )
       fileReader.readAsArrayBuffer(file);
-      // -----
-
       // 綁入事件監聽
       // 一但fileReader 完成加載後load後就可以顯示，return fileReader
       fileReader.addEventListener('load', () => {

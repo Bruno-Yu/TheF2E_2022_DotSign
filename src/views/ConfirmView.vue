@@ -5,9 +5,7 @@
     <router-link class="block w-1/3 mb-8 pt-5 lg:w-[219px] lg:mb-10" to="./login"
       ><img class="w-full lg:h-auto" src="../assets/images/Logo.png" alt="logo"
     /></router-link>
-
     <!-- navbar -->
-    <!-- content -->
     <div
       class="rounded bg-n1 mt-8 w-full md:max-w-5xl mx-auto xl:rounded xl:mt-[80px] px-4 py-6 relative"
     >
@@ -113,14 +111,11 @@ import { useUploadStore } from '../stores/userEdit';
 import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
 
-// import emitter from '../libs/emitter';
-
 export default {
   data() {
     return {
       newTag: '',
       collapse: null,
-      // allowNext: false,
       allowNext: false,
     };
   },

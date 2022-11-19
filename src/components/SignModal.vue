@@ -8,6 +8,7 @@
       aria-labelledby="signModalTitle"
       aria-modal="true"
       role="dialog"
+      ref="modal"
     >
       <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
         <div
@@ -47,13 +48,13 @@
                 >
               </li>
             </ul>
-
             <button
               type="button"
               class="absolute right-4 top-4 btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-              data-bs-dismiss="modal"
               aria-label="Close"
+              @click="hideModal"
             ></button>
+            <!-- data-bs-dismiss="modal" -->
           </div>
           <div class="modal-body relative p-4">
             <!-- content -->
@@ -66,12 +67,8 @@
               >
                 <ul class="list-none" v-if="signatures.length">
                   <li v-for="(image, index) in signatures" :key="index">
-                    <button
-                      type="button"
-                      data-btn="signature"
-                      @click="chooseSign(image)"
-                      data-bs-dismiss="modal"
-                    >
+                    <button type="button" data-btn="signature" @click="chooseSign(image)">
+                      <!-- data-bs-dismiss="modal" -->
                       <img
                         class="show-img border"
                         :src="image"
@@ -85,11 +82,12 @@
                 <button
                   type="button"
                   class="block w-full px-6 py-2.5 mt-4 mb-1 border border-p1 text-p1 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 transition duration-150 ease-in-out"
-                  data-bs-dismiss="modal"
-                  data-bs-toggle="modal"
-                  data-bs-target="#createSignature"
+                  @click="closeAndOpen"
                 >
                   創建簽名 +
+                  <!-- data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createSignature" -->
                 </button>
               </div>
               <div
@@ -122,9 +120,10 @@
                       type="button"
                       class="block w-full"
                       data-btn="images"
-                      data-bs-dismiss="modal"
                       @click="chooseSign(img)"
                     >
+                      <!-- data-bs-dismiss="modal" -->
+                      <!-- data-bs-dismiss="modal" -->
                       <img class="w-full h-auto" :src="img" :alt="index" />
                     </button>
                   </li>
@@ -144,6 +143,7 @@
     aria-labelledby="createSignature"
     aria-modal="true"
     role="dialog"
+    ref="signModal"
   >
     <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
       <div
@@ -153,22 +153,22 @@
           <button
             type="button"
             class="btn-close block w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-            data-bs-dismiss="modal"
+            @click="signHide"
             aria-label="Close"
           ></button>
           <h5 class="text-xl font-medium leading-normal text-gray-800" id="createSignatureLabel">
             創建簽名
           </h5>
+          <!-- :disabled="use" -->
           <button
-            :disabled="use"
             type="button"
             class="block px-6 py-2.5 disabled:bg-n2 disabled:text-n5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
             data-btn="signature"
             @click="saveImage"
-            data-bs-dismiss="modal"
-            data-bs-toggle="modal"
-            data-bs-target="#signModal"
           >
+            <!-- data-bs-dismiss="modal"
+            data-bs-toggle="modal"
+            data-bs-target="#signModal" -->
             使用
           </button>
         </div>
@@ -214,7 +214,6 @@
                 @click="changeColor"
               ></button>
             </li>
-
             <li>
               <button
                 type="button"
@@ -241,6 +240,7 @@
 // import Modal from 'tw-elements/dist/src/js/bs/dist/modal';
 import { mapWritableState } from 'pinia';
 import { useUploadStore } from '../stores/userEdit';
+import modalMixin from '../mixins/modalMixin';
 
 export default {
   data() {
@@ -250,13 +250,21 @@ export default {
       canvas: null,
       ctx: null,
       use: true, // 使用按鈕
+      modal: null,
+      signModal: null,
     };
   },
   computed: {
     ...mapWritableState(useUploadStore, ['signatures', 'chosenSign', 'images']),
   },
-
+  mixins: [modalMixin],
   methods: {
+    closeAndOpen() {
+      this.hideModal();
+      this.signOpen();
+      // this.$refs.modal.addEventListener('hidden.bs.modal', () => {
+      // });
+    },
     // 換顏色
     changeColor(e) {
       if (e.target.classList.contains('bg-p1')) {
@@ -306,9 +314,14 @@ export default {
     saveImage(e) {
       // 簽名圖片儲存的類型選擇 png ，並將值放入 img 的 src
       if (e.target.dataset.btn === 'signature') {
+        //
         const newImg = this.canvas.toDataURL('image/png');
         // 直接修改剛剛的函式，將拿到的檔案存起來
         this.signatures.push(newImg);
+        this.signHide();
+        this.openModal();
+        // this.$refs.signModal.addEventListener('hidden.bs.modal', () => {
+        // });
       } else if (e.target.dataset.btn === 'images') {
         if (e.target.files[0] === undefined) {
           return;
@@ -335,6 +348,7 @@ export default {
         // eslint-disable-next-line no-param-reassign
         img.scaleY = 0.5;
         this.chosenSign = img;
+        this.hideModal();
         // canvas.add(image);
       });
     },
