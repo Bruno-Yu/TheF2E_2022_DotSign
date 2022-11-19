@@ -105,7 +105,7 @@
           <nav aria-label="Page navigation example">
             <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group">
               <button
-                :disabled="currentNum === 1 ? true : false"
+                :disabled="currentNum <= 1 ? true : false"
                 type="button"
                 data-btn="prevPage"
                 class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 leading-tight transition duration-150 ease-in-out"
@@ -122,7 +122,7 @@
                 {{ currentNum }} / {{ totalNum }}
               </button>
               <button
-                :disabled="currentNum === totalNum ? true : false"
+                :disabled="currentNum >= totalNum ? true : false"
                 data-btn="nextPage"
                 type="button"
                 class="rounded-l inline-block p-2.5 bg-n1 font-medium border border-n3 leading-tight transition duration-150 ease-in-out"
@@ -184,9 +184,10 @@ export default {
   components: { FunNav, SignModal, ModalNote },
   methods: {
     switchPage(e) {
+      console.log(e.target.dataset.btn === 'nextPage');
       if (e.target.dataset.btn === 'prevPage') {
         this.currentNum -= 1;
-      } else {
+      } else if (e.target.dataset.btn === 'nextPage') {
         this.currentNum += 1;
       }
       this.renderAll();
@@ -260,7 +261,6 @@ export default {
         height: this.canvas.getHeight() * this.scale,
       });
       this.canvas.setZoom(this.scale);
-
       // this.renderAll(); // 若用這個方法，會重新建立新的canvas img
     },
     scaleDown() {
@@ -344,7 +344,6 @@ export default {
       this.selection = false;
       this.lastPosX = evt.clientX;
       this.lastPosY = evt.clientY;
-
       // this.canvas.style.cursor = 'grab';
       // this.offsetX = e.offsetX;
       // this.offsetY = e.offsetY;
@@ -382,7 +381,6 @@ export default {
         storageArray.push(newFile);
         localStorage.setItem('historyFiles', JSON.stringify(storageArray));
       }
-
       this.$router.push('./final');
     },
     hideModal() {

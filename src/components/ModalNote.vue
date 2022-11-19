@@ -63,13 +63,16 @@ export default {
       modal: null,
     };
   },
+  props: ['stage'],
   mixins: [modalMixin],
   emits: ['cancel'],
   methods: {
     confirm() {
+      if (this.stage === 0) {
+        window.location.reload();
+      }
       this.$router.push('./');
       this.hideModal();
-      // window.location.reload();
     },
     hideEmit() {
       this.$emit('cancel');

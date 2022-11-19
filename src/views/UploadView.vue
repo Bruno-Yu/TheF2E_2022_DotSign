@@ -72,7 +72,6 @@
               <span class="absolute text-2xl text-p1">{{ percent }}%</span>
             </div>
             <p class="text-center mt-6 text-n6">檔案上傳中...</p>
-
             <button
               type="button"
               class="mt-4 inline-block px-3 py-1.5 border-p1 border text-p1 font-bold whitespace-nowrap text-xs leading-tight uppercase rounded shadow-md hover:bg-p1 hover:text-n1 hover:shadow-lg focus:bg-p1 focus:text-n1 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-p1 active:text-n1 active:shadow-lg transition duration-150 ease-in-out"
@@ -86,7 +85,7 @@
       </div>
     </div>
   </div>
-  <ModalNote ref="modal" @cancel="resumeCounting" />
+  <ModalNote :stage="0" ref="modal" @cancel="resumeCounting" />
 </template>
 
 <script>
