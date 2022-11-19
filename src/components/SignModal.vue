@@ -159,8 +159,8 @@
           <h5 class="text-xl font-medium leading-normal text-gray-800" id="createSignatureLabel">
             創建簽名
           </h5>
-          <!-- :disabled="use" -->
           <button
+            :disabled="use"
             type="button"
             class="block px-6 py-2.5 disabled:bg-n2 disabled:text-n5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
             data-btn="signature"
@@ -319,6 +319,7 @@ export default {
         // 直接修改剛剛的函式，將拿到的檔案存起來
         this.signatures.push(newImg);
         this.signHide();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.openModal();
         // this.$refs.signModal.addEventListener('hidden.bs.modal', () => {
         // });
