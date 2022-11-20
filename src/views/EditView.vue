@@ -148,6 +148,8 @@ import SignModal from '../components/SignModal.vue';
 import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
 import pdfJSMixin from '../mixins/pdfJSMixin';
+import fabricMixin from '../mixins/fabricMixin';
+
 // const Base64Prefix = 'data:application/pdf;base64,';
 
 export default {
@@ -169,7 +171,7 @@ export default {
     ...mapState(useUploadStore, ['pdfFile', 'chosenSign']),
     ...mapWritableState(useUploadStore, ['ReName', 'tags', 'finalFile', 'signatures']),
   },
-  mixins: [pdfJSMixin],
+  mixins: [pdfJSMixin, fabricMixin],
   watch: {
     chosenSign(n) {
       // console.log(n);
@@ -224,15 +226,15 @@ export default {
       const scale = 1 / window.devicePixelRatio;
       // pdf的資料在這一層就被設為圖片轉出
       // eslint-disable-next-line no-undef
-      return new fabric.Image(pdfData, {
+      return new this.fabric.Image(pdfData, {
         id: 'renderPDF',
         scaleX: scale,
         scaleY: scale,
       });
     },
     async renderAll() {
-      // eslint-disable-next-line no-undef
-      this.canvas = new fabric.Canvas('canvas');
+      this.canvas = new this.fabric.Canvas('canvas');
+      // this.canvas = new fabric.Canvas('canvas');
       this.canvas.requestRenderAll();
       // await this.renderPDF(); // 到這邊成功，但比例便原本的樣子，
       const pdfData = await this.renderPDF();
@@ -270,8 +272,7 @@ export default {
       this.canvas.setZoom(this.scale);
     },
     addText() {
-      // eslint-disable-next-line no-undef
-      const iText = new fabric.IText('雙擊我編輯', {
+      const iText = new this.fabric.IText('雙擊我編輯', {
         left: 0,
         top: 120,
         hasControls: true,
@@ -285,8 +286,7 @@ export default {
       const year = new Date().getFullYear();
       const month = new Date().getMonth() + 1;
       const date = new Date().getDate();
-      // eslint-disable-next-line no-undef
-      const Text = new fabric.Text(`${year}/${month}/${date}`, {
+      const Text = new this.fabric.Text(`${year}/${month}/${date}`, {
         left: 0,
         top: 120,
         hasControls: true,
@@ -302,8 +302,7 @@ export default {
       }
     },
     clipPath() {
-      // eslint-disable-next-line no-undef
-      this.userClipPath = new fabric.Rect({
+      this.userClipPath = new this.fabric.Rect({
         width: 200,
         height: 200,
         fill: 'rgb(178, 178, 178, 0.4)',
