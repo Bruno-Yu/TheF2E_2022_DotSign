@@ -5,7 +5,8 @@ import Modal from 'tw-elements/dist/src/js/bs/src/modal';
 export default {
   data() {
     return {
-      // modal: null,
+      modal: null,
+      signModal: null,
     };
   },
   methods: {
@@ -27,7 +28,5 @@ export default {
     if (this.$refs?.signModal) {
       this.signModal = new Modal(this.$refs?.signModal);
     }
-    // this.signModal = new Modal(this.$refs?.signModal);
-    // console.log(this.modal);
   },
 };

@@ -2,10 +2,6 @@ import { defineStore } from 'pinia';
 import roundedStamp from '../assets/images/rounded_stamp.png';
 import squareStamp from '../assets/images/square_stamp.png';
 
-// pdf.js
-// eslint-disable-next-line no-undef
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
-
 // eslint-disable-next-line import/prefer-default-export
 export const useUploadStore = defineStore('useEdit', {
   state: () => ({

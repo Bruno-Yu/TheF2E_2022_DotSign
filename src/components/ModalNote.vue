@@ -58,11 +58,6 @@
 import modalMixin from '../mixins/modalMixin';
 
 export default {
-  data() {
-    return {
-      modal: null,
-    };
-  },
   props: ['stage'],
   mixins: [modalMixin],
   emits: ['cancel'],

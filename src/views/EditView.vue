@@ -147,9 +147,7 @@ import { useUploadStore } from '../stores/userEdit';
 import SignModal from '../components/SignModal.vue';
 import ModalNote from '../components/ModalNote.vue';
 import FunNav from '../components/FunNav.vue';
-// import pdfJSMixin from '../mixins/pdfJSMixin';
-// eslint-disable-next-line no-undef
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+import pdfJSMixin from '../mixins/pdfJSMixin';
 // const Base64Prefix = 'data:application/pdf;base64,';
 
 export default {
@@ -171,7 +169,7 @@ export default {
     ...mapState(useUploadStore, ['pdfFile', 'chosenSign']),
     ...mapWritableState(useUploadStore, ['ReName', 'tags', 'finalFile', 'signatures']),
   },
-  // mixins: [pdfJSMixin],
+  mixins: [pdfJSMixin],
   watch: {
     chosenSign(n) {
       // console.log(n);
@@ -200,8 +198,7 @@ export default {
       // 原本寫法
       const data = this.pdfFile;
       // const { scale } = this;
-      // eslint-disable-next-line no-undef
-      const pdfDoc = await pdfjsLib.getDocument(data).promise;
+      const pdfDoc = await this.pdfjsLib.getDocument(data).promise;
       const pdfPage = await pdfDoc.getPage(this.currentNum);
       // 將pdf 轉成 符合螢幕大小的比例
       // 取得目前的螢幕大小
@@ -248,8 +245,7 @@ export default {
     },
     async getTotalNum() {
       const data = this.pdfFile;
-      // eslint-disable-next-line no-undef
-      const pdfDoc = await pdfjsLib.getDocument(data).promise;
+      const pdfDoc = await this.pdfjsLib.getDocument(data).promise;
       // 總頁數
       this.totalNum = pdfDoc.numPages;
     },

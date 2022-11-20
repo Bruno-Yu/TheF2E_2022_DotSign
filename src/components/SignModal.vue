@@ -184,9 +184,10 @@
           <canvas
             id="signature"
             height="150"
-            width="460"
+            width="440"
             class="bg-n4"
-            @="{mousedown:startPosition, mousemove:draw, mouseup: finishedPosition }"
+            @="{mousedown:startPosition, touchstart:startPosition, mousemove:draw, touchmove:draw, mouseup: finishedPosition, touchcancel:finishedPosition
+ }"
           ></canvas>
         </div>
         <div
@@ -250,8 +251,6 @@ export default {
       canvas: null,
       ctx: null,
       use: true, // 使用按鈕
-      modal: null,
-      signModal: null,
     };
   },
   computed: {
