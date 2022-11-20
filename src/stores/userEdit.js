@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { jsPDF as JsPDF } from 'jspdf';
 import roundedStamp from '../assets/images/rounded_stamp.png';
 import squareStamp from '../assets/images/square_stamp.png';
 
@@ -21,8 +22,6 @@ export const useUploadStore = defineStore('useEdit', {
       if (event.target.files[0] === undefined) {
         return;
       }
-
-      // 超過10m 警示toast跳出
       // 透過 input 所選取的檔案
       const file = event.target.files[0];
       const { name } = file;
@@ -56,9 +55,9 @@ export const useUploadStore = defineStore('useEdit', {
       } else {
         const index = e.target.dataset.btnDownload;
         download = this.history[index];
+        // eslint-disable-next-line new-cap
       }
-      // eslint-disable-next-line no-undef, new-cap
-      const pdf = new jsPDF();
+      const pdf = new JsPDF();
       // 設定背景在 PDF 中的位置及大小
       const { width } = pdf.internal.pageSize;
       const { height } = pdf.internal.pageSize;

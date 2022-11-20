@@ -54,7 +54,6 @@
               aria-label="Close"
               @click="hideModal"
             ></button>
-            <!-- data-bs-dismiss="modal" -->
           </div>
           <div class="modal-body relative p-4">
             <!-- content -->
@@ -68,7 +67,6 @@
                 <ul class="list-none" v-if="signatures.length">
                   <li v-for="(image, index) in signatures" :key="index">
                     <button type="button" data-btn="signature" @click="chooseSign(image)">
-                      <!-- data-bs-dismiss="modal" -->
                       <img
                         class="show-img border"
                         :src="image"
@@ -85,9 +83,6 @@
                   @click="closeAndOpen"
                 >
                   創建簽名 +
-                  <!-- data-bs-dismiss="modal"
-                  data-bs-toggle="modal"
-                  data-bs-target="#createSignature" -->
                 </button>
               </div>
               <div
@@ -122,8 +117,6 @@
                       data-btn="images"
                       @click="chooseSign(img)"
                     >
-                      <!-- data-bs-dismiss="modal" -->
-                      <!-- data-bs-dismiss="modal" -->
                       <img class="w-full h-auto" :src="img" :alt="index" />
                     </button>
                   </li>
@@ -166,9 +159,6 @@
             data-btn="signature"
             @click="saveImage"
           >
-            <!-- data-bs-dismiss="modal"
-            data-bs-toggle="modal"
-            data-bs-target="#signModal" -->
             使用
           </button>
         </div>
@@ -238,10 +228,10 @@
 </template>
 
 <script>
-// import Modal from 'tw-elements/dist/src/js/bs/dist/modal';
 import { mapWritableState } from 'pinia';
 import { useUploadStore } from '../stores/userEdit';
 import modalMixin from '../mixins/modalMixin';
+import fabricMixin from '../mixins/fabricMixin';
 
 export default {
   data() {
@@ -256,13 +246,11 @@ export default {
   computed: {
     ...mapWritableState(useUploadStore, ['signatures', 'chosenSign', 'images']),
   },
-  mixins: [modalMixin],
+  mixins: [modalMixin, fabricMixin],
   methods: {
     closeAndOpen() {
       this.hideModal();
       this.signOpen();
-      // this.$refs.modal.addEventListener('hidden.bs.modal', () => {
-      // });
     },
     // 換顏色
     changeColor(e) {
@@ -320,8 +308,6 @@ export default {
         this.signHide();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.openModal();
-        // this.$refs.signModal.addEventListener('hidden.bs.modal', () => {
-        // });
       } else if (e.target.dataset.btn === 'images') {
         if (e.target.files[0] === undefined) {
           return;
@@ -331,25 +317,18 @@ export default {
         const stamp = URL.createObjectURL(file);
         this.images.push(stamp);
       }
-      // 打開簽名檔的modal
-      // this.createSignature_modal.toggle();
-      // this.signModal.show();
     },
     // 選擇 簽名
     chooseSign(image) {
       // eslint-disable-next-line no-undef
-      fabric.Image.fromURL(image, (img) => {
+      this.fabric.Image.fromURL(image, (img) => {
         // 設定簽名出現的位置及大小，後續可調整
-        // console.log(img);
-        // eslint-disable-next-line no-param-reassign
-        img.top = 100;
-        // eslint-disable-next-line no-param-reassign
-        img.scaleX = 0.5;
-        // eslint-disable-next-line no-param-reassign
-        img.scaleY = 0.5;
-        this.chosenSign = img;
+        const imgParam = img;
+        imgParam.top = 100;
+        imgParam.scaleX = 0.5;
+        imgParam.scaleY = 0.5;
+        this.chosenSign = imgParam;
         this.hideModal();
-        // canvas.add(image);
       });
     },
   },

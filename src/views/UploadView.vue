@@ -1,4 +1,3 @@
-<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <!-- eslint-disable max-len -->
 <template>
   <div class="bg-p2 w-full h-screen flex flex-col items-center px-4 xl:relative">

@@ -1,4 +1,3 @@
-<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <!-- eslint-disable max-len -->
 <template>
   <div class="bg-n3 flex min-h-screen flex-col overflow-clip">
@@ -13,8 +12,6 @@
               class="flex w-full items-center whitespace-nowrap text-sm py-4 px-6 h-12 overflow-hidden text-ellipsis hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
               @click="signOpen"
             >
-              <!-- data-bs-toggle="modal"
-              data-bs-target="#signModal" -->
               <img class="inline-block mr-1" src="../assets/Icon/edit.png" alt="edit" />
               <p>簽名</p>
             </button>
@@ -42,8 +39,7 @@
         </ul>
       </div>
       <div class="relative w-full py-4 pl-4 lg:w-4/5">
-        <canvas class="absolute drop-shadow-lg" id="canvas" @mousedown="mouseDownHandler"></canvas>
-        <!-- <canvas id="fabricCanvas"></canvas> -->
+        <canvas class="absolute drop-shadow-lg" id="canvas"></canvas>
         <!-- function buttons 1-->
         <div class="flex items-center justify-center absolute left-8 top-6 z-10 rounded">
           <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group">
@@ -78,8 +74,6 @@
               class="rounded-l inline-block p-1.5 lg:p-2.5 bg-n1 font-medium border border-n3 text-xs leading-tight transition duration-150 ease-in-out"
               @click="signOpen"
             >
-              <!-- data-bs-toggle="modal"
-              data-bs-target="#signModal" -->
               <img src="../assets/Icon/edit.png" alt="edit" />
             </button>
             <button
@@ -150,8 +144,6 @@ import FunNav from '../components/FunNav.vue';
 import pdfJSMixin from '../mixins/pdfJSMixin';
 import fabricMixin from '../mixins/fabricMixin';
 
-// const Base64Prefix = 'data:application/pdf;base64,';
-
 export default {
   data() {
     return {
@@ -174,10 +166,6 @@ export default {
   mixins: [pdfJSMixin, fabricMixin],
   watch: {
     chosenSign(n) {
-      // console.log(n);
-      // eslint-disable-next-line no-undef
-      // const canvas = new fabric.Canvas('canvas');
-      // canvas.requestRenderAll();
       this.canvas.add(n);
     },
   },
@@ -193,11 +181,6 @@ export default {
       this.renderAll();
     },
     async renderPDF() {
-      // 將 base64 中的前綴刪去，並進行解碼
-      // console.log(this.pdfFile); // null?
-      // const data = atob(this.pdfFile.substring(Base64Prefix.length));
-      // console.log(data, this.pdfFile);
-      // 原本寫法
       const data = this.pdfFile;
       // const { scale } = this;
       const pdfDoc = await this.pdfjsLib.getDocument(data).promise;
@@ -211,8 +194,6 @@ export default {
       // 設置canvas的寬高
       canvas.width = viewport.width;
       canvas.height = viewport.height;
-
-      // pdfPage.render({ canvasContext: context, viewport });
       // 為做成圖片，將繪製好的pdf作為變數回傳
       const renderTask = pdfPage.render({ canvasContext: context, viewport });
       // 回傳做好的 PDF canvas
@@ -221,11 +202,9 @@ export default {
     async pdfToImage(pdfData) {
       // 設定 PDF 轉為圖片時的比例
       // 回傳圖片
-      // const { scale } = this;
       // 設定 PDF 轉為圖片時的比例
       const scale = 1 / window.devicePixelRatio;
       // pdf的資料在這一層就被設為圖片轉出
-      // eslint-disable-next-line no-undef
       return new this.fabric.Image(pdfData, {
         id: 'renderPDF',
         scaleX: scale,
@@ -234,9 +213,7 @@ export default {
     },
     async renderAll() {
       this.canvas = new this.fabric.Canvas('canvas');
-      // this.canvas = new fabric.Canvas('canvas');
       this.canvas.requestRenderAll();
-      // await this.renderPDF(); // 到這邊成功，但比例便原本的樣子，
       const pdfData = await this.renderPDF();
       this.pdfImage = await this.pdfToImage(pdfData);
       // 透過比例設定 canvas 尺寸
@@ -253,18 +230,14 @@ export default {
     },
     scaleUp() {
       this.scale += 0.1;
-      // this.renderPDF();
       this.canvas.setDimensions({
         width: this.canvas.getWidth() * this.scale,
         height: this.canvas.getHeight() * this.scale,
       });
       this.canvas.setZoom(this.scale);
-      // this.renderAll(); // 若用這個方法，會重新建立新的canvas img
     },
     scaleDown() {
       this.scale -= 0.1;
-      // this.renderPDF();
-      // this.renderAll();
       this.canvas.setDimensions({
         width: this.canvas.getWidth() * this.scale,
         height: this.canvas.getHeight() * this.scale,
@@ -333,39 +306,11 @@ export default {
       this.userClipPath.opacity = 0;
       this.canvas.renderAll();
     },
-    mouseDownHandler(opt) {
-      const evt = opt.e;
-      this.isDragging = true;
-      this.selection = false;
-      this.lastPosX = evt.clientX;
-      this.lastPosY = evt.clientY;
-      // this.canvas.style.cursor = 'grab';
-      // this.offsetX = e.offsetX;
-      // this.offsetY = e.offsetY;
-      // // 按下時開始監聽在文件中滑鼠移動的事件，注意這邊是直接監聽mouseDownHandler的掛載目標，因此沒有對像
-      // // 注意這有順序不是同時發生的，因此不能同時綁定在canvas上
-      // document.addEventListener('mousemove', this.mousemoveHandler);
-      // document.addEventListener('mouseup', this.mouseUpHandler);
-    },
-    mousemoveHandler(e) {
-      // 用當前滑鼠位置減去這個相對元素的左上角位置，保證滑鼠所按位置拖拽
-      this.canvas.style.left = `${e.clientX - this.offsetX}px`;
-      this.canvas.style.top = `${e.clientY - this.offsetY}px`;
-    },
-    // 當釋放滑鼠鍵時，刪除滑鼠移動事件和刪除滑鼠釋放事件
-    mouseUpHandler() {
-      // 注意這邊是直接監聽mouseDownHandler的掛載目標，因此沒有對像
-      document.removeEventListener('mousemove', this.mousemoveHandler);
-      document.removeEventListener('mouseup', this.mouseUpHandler);
-      this.canvas.style.cursor = 'default';
-    },
     confirmedEdit() {
       this.finalFile = this.canvas.toDataURL('image/png');
-      // 存到localStorage
       const newFile = {};
       newFile.file = `${this.finalFile}`;
       newFile.name = `${this.ReName}`;
-      // localStorage.setItem(`${this.ReName}`, this.finalFile);
       if (localStorage.getItem('historyFiles') === null) {
         const storageArray = [];
         storageArray.push(newFile);
